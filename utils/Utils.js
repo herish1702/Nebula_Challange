@@ -30,17 +30,6 @@ class Utils {
     performDragAndDrop = (source, target) => {
         this.performGetElement(source).drag(this.performGetElement(target), { force: true })
     }
-
-    performGetDate = (selector) => {
-        return this.performGetElement(selector)
-        // .first()
-        .invoke('text')
-        .then((text) => {
-            const match = text.match(/\d{4}-\d{2}-\d{2}/);
-            return match ? match[0] : null;
-        });
-
-    }
-}
+};
 
 export {Utils}

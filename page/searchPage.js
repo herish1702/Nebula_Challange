@@ -41,41 +41,91 @@ class SearchPage {
         return this.utils.performGetDate(this.searchPageLocatorsObject.grantDate);
     }
 
-    fetchAndPrintDates = () => {
-        const datesFetched = {};
-        return this.getPublicationDate().then((pubDate) => {
-            datesFetched.publicationDate = pubDate;
-            cy.task("Log:", `Publication date: ${pubDate}`);
-            return this.getFilingDate();
-        }).then((filingDate) => {
-            datesFetched.filingDate = filingDate;
-            cy.task("Log:", `Filing date: ${filingDate}`);
-            return this.getGrantDate();
-        }).then((grantDate) => {
-            datesFetched.grantDate = grantDate;
-            cy.task("Log:", `Grant date: ${grantDate}`);
-            return cy.wrap(datesFetched)
-        });
+    extractDateByLabel = (labelText, logLabel, collectedDates) => {
+        return cy.document().then((doc) => {
+            const el = doc.evaluate(
+                `(//b[contains(text(),'${labelText}')]/parent::td/following-sibling::td)[1]`,
+                doc,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null
+                ).singleNodeValue;
+
+            if (el) {
+                const rawText = el.textContent.trim();
+                const match = rawText.match(/\d{4}-\d{2}-\d{2}/);
+                collectedDates[logLabel] = match ? match[0] : null;
+            }
+            else{
+                collectedDates[logLabel] = null;
+            }
+        })
     }
+
+    fetchAndStoreDates = (collectedDates) => {
+            return cy.contains("Jurisdiction").parents("table").then(() => {
+                this.extractDateByLabel("Publication date", "Publication Date", collectedDates)
+                .then(() => this.extractDateByLabel("Filing date", "Filing Date", collectedDates))
+                .then(() => this.extractDateByLabel("Grant date", "Grant Date", collectedDates))
+                .then(() => {
+                    Object.entries(collectedDates).forEach(([label, value]) => {
+                    const paddedLabel = label.padEnd(18);
+                    cy.task("Log:", `${paddedLabel}: ${value}`);
+                })
+
+                cy.task("writeToFixture", {
+                    fileName: "dateOutput.json",
+                    data: collectedDates
+                })
+            })
+        })
+    }
+
 
     calculateDateDifference = (date1, date2) => {
         const d1 = new Date(date1);
         const d2 = new Date(date2);
-        const diff = Math.abs(d1 - d2);
-        return Math.floor(diff / (1000 * 60 * 60 * 24));
+        let start = d1 < d2 ? d1 : d2;
+        let end = d1 > d2 ? d1 : d2;
+        let years = end.getFullYear() - start.getFullYear();
+        let months = end.getMonth() - start.getMonth();
+        let days = end.getDate() - start.getDate();
+
+        if (days < 0) {
+            months--;
+            const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+            days += prevMonth.getDate();
+        }
+
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        return `${years} years, ${months} months, ${days} days`;
+    };
+    
+    calculateAndLogDateDiffs = (datesFetched) => {
+        const parse = (d) => d ? new Date(d) : null;
+        const publicationDate = parse(datesFetched["Publication Date"]);
+        const filingDate = parse(datesFetched["Filing Date"]);
+        const grantDate = parse(datesFetched["Grant Date"]);
+        
+        if(publicationDate && grantDate) {
+            const diff = this.calculateDateDifference(publicationDate, grantDate);
+            cy.task("Log:", `Difference between Publication and Grant: ${diff}`);
+        }
+
+        if(publicationDate && filingDate) {
+            const diff = this.calculateDateDifference(publicationDate, filingDate);
+            cy.task("Log:", `Difference between Publication and Filing: ${diff}`);
+        }
+
+        if (grantDate && filingDate) {
+            const diff = this.calculateDateDifference(grantDate, filingDate);
+            cy.task("Log:", `Difference between Grant and Filing: ${diff}`);
+        }
     }
 
-    calculateAndPrintAllDateDiffs = (datesFetched) => {
-        const { publicationDate, filingDate, grantDate } = datesFetched;
-
-        const publicationGrantDifference = this.calculateDateDifference(publicationDate, grantDate);
-        const publicationFilingDifference = this.calculateDateDifference(publicationDate, filingDate);
-        const grantFilingDifference = this.calculateDateDifference(grantDate, filingDate);
-
-        cy.task("Log:", `Difference between Publication date and Grant date is ${publicationGrantDifference} days`);
-        cy.task("Log:", `Difference between Publication date and Filing date is ${publicationFilingDifference} days`)
-        cy.task("Log:", `Difference between Grant date and Filing date is ${grantFilingDifference} days`);
-    }
 }
-
 export { SearchPage };

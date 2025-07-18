@@ -3,6 +3,7 @@
     "@4tw/cypress-drag-drop": "^2.3.0",
     "@shelex/cypress-allure-plugin": "^2.41.2",
     "cypress": "^14.5.2",
+    "cypress-shadow-dom": "^1.4.1",
     "cypress-xpath": "^2.0.1"
   }
 }
