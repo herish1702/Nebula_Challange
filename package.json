@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.3.0",
+    "@shelex/cypress-allure-plugin": "^2.41.2",
+    "cypress": "^14.5.2",
+    "cypress-xpath": "^2.0.1"
+  }
+}
