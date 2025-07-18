@@ -20,15 +20,15 @@ Let’s say the automation searches for **"Paracetamol"** and finds the first ma
 
 In the patent details, the dates are found:
 
-Filing date: 2024-02-01
-Publication date: 2024-06-01
-Grant date: 2024-11-15
+- Filing date: 2024-02-01
+- Publication date: 2024-06-01
+- Grant date: 2024-11-15
 
 The script will calculate and print:
 
-Difference between Filing and Publication date: 120 days
-Difference between Filing and Grant date: 288 days
-Difference between Publication and Grant date: 167 days
+- Difference between Filing and Publication date: 120 days
+- Difference between Filing and Grant date: 288 days
+- Difference between Publication and Grant date: 167 days
 
 It handles situations like:
 - Dates scattered across **multiple tables**
