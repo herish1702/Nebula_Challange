@@ -62,6 +62,7 @@ npm install --save-dev @4tw/cypress-drag-drop. # Install Drag n Drop dependeny, 
 
 # Folder Structure
 
+```bash
 Nebula_Challange/
 ├── cypress/
 │ ├── e2e/ # Test specs (.cy.js files)
@@ -87,3 +88,4 @@ Nebula_Challange/
 ├── cypress.config.js # Cypress project config
 ├── package.json # NPM dependencies and scripts
 ├── README.md # Project documentation
+```
