@@ -46,19 +46,21 @@ It handles situations like:
 
 # Commends to installation
 
-npm install cypress --save-dev  # Install Cypress's packages
+- npm install cypress --save-dev  # Install Cypress's packages
 
-npx cypress oprn  # Open th e cypress's UI, and Cypress will auto-generate the required folders (cypress/, cypress.config.js, etc.)
+- npx cypress oprn  # Open th e cypress's UI, and Cypress will auto-generate the required folders (cypress/, cypress.config.js, etc.)
 
-npx cypress run  # Run the spec file in headless mode (Note: By default, will run in Electron browser)
+- npx cypress run  # Run the spec file in headless mode (Note: By default, will run in Electron browser)
 
-npx cypress run --headed --browser=edge  #  Run the spec file in headed mode in spectific browser (Note: Browser should be install in respective system)
+- npx cypress run --headed --browser=edge  #  Run the spec file in headed mode in spectific browser (Note: Browser should be install in respective system)
 
 # Commends to add external libraries
 
-npm install --save-dev cypress-xpath  # Install Xpath dependency, for accessing xpath locators
-npm install --save-dev @shelex/cypress-allure-plugin  # Install Allure dependency, for creating reports
-npm install --save-dev @4tw/cypress-drag-drop. # Install Drag n Drop dependeny, for performing drag n drop action
+- npm install --save-dev cypress-xpath  # Install Xpath dependency, for accessing xpath locators
+
+- npm install --save-dev @shelex/cypress-allure-plugin  # Install Allure dependency, for creating reports
+
+- npm install --save-dev @4tw/cypress-drag-drop. # Install Drag n Drop dependeny, for performing drag n drop action
 
 # Folder Structure
 
