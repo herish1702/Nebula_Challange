@@ -39,10 +39,10 @@ It handles situations like:
 
 # Tech Stack
 
-Cypress (v14+)
-JavaScript
-Mocha Test Runner
-Page Object Model + Custom Commands
+- Cypress (v14+)
+- JavaScript
+- Mocha Test Runner
+- Page Object Model + Custom Commands
 
 # Commends to installation
 
